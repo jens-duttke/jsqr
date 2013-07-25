@@ -1,4 +1,4 @@
-[JSQR](http://jsqr.de/) - JSQR - JavaScript Quick Response Code Encoder Library
+[JSQR](http://jsqr.de/) - JavaScript QR Code Encoder Library
 ===============================================================================
 
 JSQR is the JavaScript Library that is able to encode different data formats, like vCards, vCalendar Events, geo coordinates etc. into QR codes directly in the browser on the client, without any requests to a remote server. This increases the flexibility, speed and security of web applications.
