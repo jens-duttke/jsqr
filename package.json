@@ -1,0 +1,31 @@
+{
+  "name": "JSQR",
+  "version": "1.0.0",
+  "description": "JavaScript Quick Response Code Encoder Library",
+  "readme": "README.md",
+  "homepage": "http://www.jsqr.de",
+  "keywords": [
+    "qrcode",
+    "encoder",
+    "offline",
+    "library"
+  ],
+  "author": {
+    "name": "Jens Duttke",
+    "email": "support@jsqr.de"
+  },
+  "license": "(MIT OR GPL-2.0)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-uglify": "^0.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jens-duttke/jsqr.git"
+  },
+  "distribution": "build"
+}
