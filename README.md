@@ -43,8 +43,38 @@ IE8+, Chrome, Firefox, Safari, Opera, Mobile Safari, Android, Windows Mobile, ET
 
 License
 -------
-MIT License
+Dual licensed under the MIT or GPL Version 2 licenses.
+
+What you need to build JSQR
+---------------------------
+
+In order to build JSQR, you need to have the latest Node.js/npm and git 1.7 or later. Earlier versions might work, but are not supported.
+
+For Windows, you have to download and install [git](http://git-scm.com/downloads) and [Node.js](http://nodejs.org/download/).
+
+Mac OS X users should install [Homebrew](http://brew.sh/). Once Homebrew is installed, run `brew install git` to install git,
+and `brew install node` to install Node.js.
+
+Linux/BSD users should use their appropriate package managers to install git and Node.js, or build from source.
+
+How to build JSQR
+-----------------
+Clone a copy of the main JSQR git repo by running:
+
+```bash
+git clone git://github.com/jens-duttke/jsqr.git
+```
+
+Enter the `jsqr/` directory and install the required npm packages
+```bash
+cd jsqr && npm install
+```
+
+Now by running the `grunt` command, in the `jsqr/` directory, you can build a full version of JSQR:
+```bash
+grunt
+```
 
 Contact
 -------
-j.duttke@web.de
+support@jsqr.de
