@@ -9,3 +9,6 @@ Thumbs.db
 Desktop.ini
 *~
 *.lock
+
+# Distribution files
+build/
