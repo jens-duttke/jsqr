@@ -12,3 +12,8 @@ Desktop.ini
 
 # Distribution files
 build/
+
+# IDE project files
+.idea
+*.sublime-project
+*.sublime-workspace
