@@ -10,22 +10,41 @@ module.exports = function (grunt) {
 
 		concat: {
 			options: {
-				banner: '/*\n\t<%= pkg.name %> - <%= pkg.description %> v<%= pkg.version %>\n\t<%= pkg.homepage %>\n\n\tCopyright 2011-2015, <%= pkg.author.name %>\n\tDual licensed under the MIT or GPL Version 2 licenses.\n\thttp://jsqr.de/license\n\n\tDate: <%= grunt.template.today("yyyy-mm-dd") %>\n*/\n(function (window, undefined) {\n',
-				footer: '})(window);',
 				stripBanners: true,
 				separator: '\n',
 				process: function (src, filepath) {
-					return src.replace(/(^|\n)/g, '$1\t');
+					switch (filepath) {
+						case 'src/intro.js':
+							return src.replace(/@([A-Z]+)/g, function (match, $1) {
+								var param = $1.toLowerCase();
+
+								switch (param) {
+									case 'today':
+										return grunt.template.today("yyyy-mm-dd");
+									case 'year':
+										return grunt.template.today("yyyy");
+									case 'author':
+										return grunt.config.data.pkg.author.name;
+									default:
+										return grunt.config.data.pkg[param] || '';
+								}
+							});
+						case 'src/outro.js':
+							return src;
+						default:
+							return src.replace(/(^|\n)/g, '$1\t');
+					}
 				}
 			},
 			dist: {
-				src: ['src/input.js', 'src/code.js', 'src/matrix.js', 'src/encoder.js', 'src/main.js'],
+				src: ['src/intro.js', 'src/input.js', 'src/code.js', 'src/matrix.js', 'src/encoder.js', 'src/main.js', 'src/outro.js'],
 				dest: '<%= pkg.distribution %>/<%= pkg.name.toLowerCase() %>-<%= pkg.version %>.js'
 			}
 		},
 
 		uglify: {
 			options: {
+				preserveComments: 'some',
 				screwIE8: false,
 				sourceMap: true
 			},
