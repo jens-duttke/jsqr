@@ -1,7 +1,7 @@
 ﻿var Input = function (dataType, data) {
 	if (typeof dataType !== 'undefined') {
 		if (!isEnumValue(this.DATA_TYPE, dataType)) {
-			throw new TypeError('Unsupported dataType.');
+			throw new TypeError('Unsupported dataType');
 		}
 	} else {
 		dataType = this.DATA_TYPE.DEFAULT;
@@ -15,7 +15,7 @@
 				if (isEnumValue(this.DATA_TYPE, value)) {
 					dataType = value;
 				} else {
-					throw new TypeError('Unsupported dataType.');
+					throw new TypeError('Unsupported dataType');
 				}
 			}
 		});
@@ -65,31 +65,29 @@ Input.prototype.toString = function () {
 	switch (this.dataType) {
 		case this.DATA_TYPE.DEFAULT:
 		case this.DATA_TYPE.TEXT:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.text', 'string', 'number');
 				validateRequired('data.text');
 				return dataStr('text');
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				return dataStr();
 			}
 
 		case this.DATA_TYPE.URL:
-			switch (typeof this.data) {
-				case 'string':
-					validateRequired('data');
-					return (/^[a-zA-Z]+:\/\//.test(dataStr()) ? '' : 'http://') + dataStr();
-				case 'object':
-					validateType('data.url', 'string');
-					validateRequired('data.url');
-					return (/^[a-zA-Z]+:\/\//.test(dataStr('url')) ? '' : 'http://') + dataStr('url');
-				default:
-					throw new TypeError('Unexcepted type of data.url (string).');
+			validateType('data', 'string', 'object');
+			if (typeof this.data === 'object') {
+				validateType('data.url', 'string');
+				validateRequired('data.url');
+				return (/^[a-zA-Z]+:\/\//.test(dataStr('url')) ? '' : 'http://') + dataStr('url');
+			} else { // string
+				validateRequired('data');
+				return (/^[a-zA-Z]+:\/\//.test(dataStr()) ? '' : 'http://') + dataStr();
 			}
 
 		case this.DATA_TYPE.BOOKMARK:
-			// http://www.nttdocomo.co.jp/english/service/imode/make/content/barcode/function/application/bookmark/
+			// https://www.nttdocomo.co.jp/english/service/developer/make/content/barcode/function/application/bookmark/
 			validateType('data', 'object');
 			validateType('data.title', 'string', 'number');
 			validateType('data.url', 'string');
@@ -98,22 +96,14 @@ Input.prototype.toString = function () {
 			return 'MEBKM:TITLE:' + dataStr('title') + ';URL:' + (/^[a-zA-Z]+:\/\//.test(dataStr('url')) ? '' : 'http://') + dataStr('url');
 
 		case this.DATA_TYPE.CALL:
-			switch (typeof this.data) {
-				case 'string':
-				case 'number':
-					validateRequired('data');
-					return 'TEL:' + dataStr();
-				case 'object':
-					switch (typeof this.data.phoneNumber) {
-						case 'string':
-						case 'number':
-							validateRequired('data.phoneNumber');
-							return 'TEL:' + dataStr('phoneNumber');
-						default:
-							throw new TypeError('Unexcepted type of data (string|number).');
-					}
-				default:
-					throw new TypeError('Unexcepted type of data.phoneNumber (string|number).');
+			validateType('data', 'string', 'number', 'object');
+			if (typeof this.data === 'object') {
+				validateType('data.phoneNumber', 'string', 'number');
+				validateRequired('data.phoneNumber');
+				return 'TEL:' + dataStr('phoneNumber');
+			} else { // string or number
+				validateRequired('data');
+				return 'TEL:' + dataStr();
 			}
 
 		case this.DATA_TYPE.SMS:
@@ -185,7 +175,7 @@ Input.prototype.toString = function () {
 					str[0] = '3.0';
 					break;
 				default:
-					throw new Error('Unsupported VCARD.version (' + dataStr('version') + ').');
+					throw new Error('Unsupported VCARD.version (' + dataStr('version') + ')');
 			}
 
 			switch (dataStr('type').toLowerCase()) {
@@ -199,7 +189,7 @@ Input.prototype.toString = function () {
 						'X-ABShowAs:COMPANY\n';
 					break;
 				default:
-					throw new Error('Unsupported VCARD.type (' + dataStr('type') + ').');
+					throw new Error('Unsupported VCARD.type (' + dataStr('type') + ')');
 			}
 
 			return 'BEGIN:VCARD\n' +
@@ -271,7 +261,7 @@ Input.prototype.toString = function () {
 			validateRequired('data.format', 'data.summary', 'data.fullDay', 'data.startDate', 'data.endDate');
 
 			if (Date.parse(dataStr('startDate')) > Date.parse(dataStr('endDate'))) {
-				throw new RangeError('VEVENT.startDate must be older than VEVENT.endDate.');
+				throw new RangeError('VEVENT.startDate must be older than VEVENT.endDate');
 			}
 
 			replaceObj = {
@@ -298,7 +288,7 @@ Input.prototype.toString = function () {
 				case 'zxing':	// ZXing
 					return str;
 				default:
-					throw new Error('Unsupported VEVENT.format (' + dataStr('format') + ').');
+					throw new Error('Unsupported VEVENT.format (' + dataStr('format') + ')');
 			}
 
 		case this.DATA_TYPE.GOOGLE_MAPS:
@@ -327,34 +317,34 @@ Input.prototype.toString = function () {
 			return 'GEO:' + dataStr('latitude') + ',' + dataStr('longitude');
 
 		case this.DATA_TYPE.ITUNES:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.appId', 'string', 'number');
 				validateRequired('data.appId');
 				str = dataStr('appId');
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				str = dataStr();
 			}
 
 			if (!(/\d+$/).test(str)) {
-				throw new Error('Invalid ITUNES.appId. The id must be numeric.');
+				throw new Error('Invalid ITUNES.appId. The id must be numeric');
 			}
 			return 'http://itunes.apple.com/app/id' + (/\d+$/).exec(str)[0];
 
 		case this.DATA_TYPE.ITUNES_REVIEW:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.appId', 'string', 'number');
 				validateRequired('data.appId');
 				str = dataStr('appId');
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				str = dataStr();
 			}
 
 			if (!(/\d+$/).test(str)) {
-				throw new Error('Invalid ITUNES.appId. The id must be numeric.');
+				throw new Error('Invalid ITUNES.appId. The id must be numeric');
 			}
 			return 'itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=' + (/\d+$/).exec(str)[0];
 
@@ -375,7 +365,7 @@ Input.prototype.toString = function () {
 					str = 'http://market.android.com/';
 					break;
 				default:
-					throw new Error('Unsupported ANDROID_MARKET.linkType (' + dataStr('linkType') + ').');
+					throw new Error('Unsupported ANDROID_MARKET.linkType (' + dataStr('linkType') + ')');
 			}
 
 			switch (dataStr('searchType').toLowerCase()) {
@@ -388,16 +378,16 @@ Input.prototype.toString = function () {
 				case 'details':
 					return str + 'details?id=' + encodeURIComponent(dataStr('search'));
 				default:
-					throw new Error('Unsupported ANDROID_MARKET.searchType (' + dataStr('searchType') + ').');
+					throw new Error('Unsupported ANDROID_MARKET.searchType (' + dataStr('searchType') + ')');
 			}
 
 		case this.DATA_TYPE.FACEBOOK_USER_PROFILE:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.profileId', 'string', 'number');
 				validateRequired('data.profileId');
 				str = dataStr('profileId');
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				str = dataStr();
 			}
@@ -407,30 +397,30 @@ Input.prototype.toString = function () {
 			} else if ((/(\/profile\/|(\?|&)id=)(\d{15})(%26|&|$)/).test(str)) {
 				return 'fb://profile/' + (/(\/profile\/|(\?|&)id=)(\d{15})(%26|&|$)/).exec(str)[3];
 			}
-			throw new Error('Invalid FACEBOOK_USER_PROFILE.videoId. The id must be numeric, 15 characters in length.');
+			throw new Error('Invalid FACEBOOK_USER_PROFILE.videoId. The id must be numeric, 15 characters in length');
 
 		case this.DATA_TYPE.FOURSQUARE:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.venueId', 'string', 'number');
 				validateRequired('data.venueId');
 				str = dataStr('venueId');
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				str = dataStr();
 			}
 			if (!(/\d+$/).test(str)) {
-				throw new Error('Invalid FOURSQUARE.venueId. The id must be numeric.');
+				throw new Error('Invalid FOURSQUARE.venueId. The id must be numeric');
 			}
 			return 'http://foursquare.com/venue/' + (/\d+$/).exec(str)[0];
 
 		case this.DATA_TYPE.WIKIPEDIA:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.url', 'string', 'number');
 				validateRequired('data.url');
 				str = dataStr('url');
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				str = dataStr();
 			}
@@ -447,12 +437,12 @@ Input.prototype.toString = function () {
 			}
 
 		case this.DATA_TYPE.YOUTUBE_USER:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.userName', 'string', 'number');
 				validateRequired('data.userName');
 				str = dataStr('userName');
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				str = dataStr();
 			}
@@ -460,12 +450,12 @@ Input.prototype.toString = function () {
 			return 'http://youtube.com/user/' + str;
 
 		case this.DATA_TYPE.YOUTUBE_VIDEO:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.videoId', 'string', 'number');
 				validateRequired('data.videoId');
 				str = dataStr('videoId');
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				str = dataStr();
 			}
@@ -475,18 +465,18 @@ Input.prototype.toString = function () {
 			} else if ((/(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z0-9]+)(%26|&|$)/).test(str)) {
 				return 'youtube://' + (/(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z0-9]+)(%26|&|$)/).exec(str)[3];
 			}
-			throw new Error('Invalid YOUTUBE.videoId. The id must be alphanumeric.');
+			throw new Error('Invalid YOUTUBE.videoId. The id must be alphanumeric');
 
 		case this.DATA_TYPE.TWEET_FETCH:
-			throw new Error('DATA_TYPE.TWEET_FETCH is currently unsupported.');
+			throw new Error('DATA_TYPE.TWEET_FETCH is currently unsupported');
 
 		case this.DATA_TYPE.TWEET:
+			validateType('data', 'string', 'number', 'object');
 			if (typeof this.data === 'object') {
 				validateType('data.text', 'string', 'number');
 				validateRequired('data.text');
 				return 'http://twitter.com/home?status=' + encodeURIComponent(dataStr('text'));
-			} else {
-				validateType('data', 'string', 'number');
+			} else { // string or number
 				validateRequired('data');
 				return 'http://twitter.com/home?status=' + encodeURIComponent(dataStr());
 			}
@@ -499,7 +489,7 @@ Input.prototype.toString = function () {
 			validateRequired('data.bbmPin');
 
 			if (!(/^[A-Za-z0-9]{8}$/).test(dataStr('bbmPin'))) {
-				throw new Error('Invalid BLACKBERRY_MESSENGER_USER.bbmPin. The pin must be alphanumeric, eight characters in length.');
+				throw new Error('Invalid BLACKBERRY_MESSENGER_USER.bbmPin. The pin must be alphanumeric, eight characters in length');
 			}
 			return 'bbm:' + dataStr('bbmPin') + '00000000' + dataStr('firstName') + ' ' + dataStr('lastName');
 
@@ -516,7 +506,7 @@ Input.prototype.toString = function () {
 				';;';
 
 		default:
-			throw new TypeError('Unsupported dataType.');
+			throw new TypeError('Unsupported dataType');
 	}
 
 	function data (propsPath) {
@@ -562,12 +552,13 @@ Input.prototype.toString = function () {
 			}
 		}
 		if (typeof prop === 'undefined') {
-			throw new TypeError(arguments[0] + ' is undefined.');
+			throw new TypeError(arguments[0] + ' is undefined');
 		} else {
-			throw new TypeError('Unexcepted type (' + typeof prop + ') of ' + arguments[0] + ' (' + [].slice.call(arguments, 1).join('|') + ').');
+			throw new TypeError('Unexcepted type (' + typeof prop + ') of ' + arguments[0] + ' (' + [].slice.call(arguments, 1).join('|') + ')');
 		}
 	}
 
+	// Throws an error if a property is a string, but contains no characters.
 	function validateRequired () {
 		var props, prop, i, j;
 
@@ -580,7 +571,7 @@ Input.prototype.toString = function () {
 			}
 
 			if (typeof prop === 'string' && prop.length === 0) {
-				throw new Error('Required: ' + arguments[i]);
+				throw new Error(arguments[i] + ' cannot be empty');
 			}
 		}
 	}
