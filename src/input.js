@@ -55,7 +55,8 @@ Input.prototype.DATA_TYPE = {
 	ANDROID_WIFI: 20,				// WIFI Network for Android
 	WIKIPEDIA: 21,					// Wikipedia Article URL
 	YOUTUBE_USER: 22,				// Youtube User Videos
-	YOUTUBE_VIDEO: 23				// Youtube Video URL for iPhone
+	YOUTUBE_VIDEO: 23,				// Youtube Video URL for iPhone
+	BITCOIN: 24						// Bitcoin
 };
 
 Input.prototype.toString = function () {
@@ -504,6 +505,17 @@ Input.prototype.toString = function () {
 				';T:' + dataStr('networkType') +
 				(dataStr('password').length > 0 ? ';P:' + dataStr('password') : '') +
 				';;';
+
+		case this.DATA_TYPE.BITCOIN:
+			validateType('data', 'string', 'object');
+			if (typeof this.data === 'object') {
+				validateType('data.hash', 'string');
+				validateRequired('data.hash');
+				return (/^bitcoin:/.test(dataStr('hash')) ? '' : 'bitcoin:') + dataStr('hash');
+			} else { // string
+				validateRequired('data');
+				return (/^bitcoin:/.test(dataStr()) ? '' : 'bitcoin:') + dataStr();
+			}
 
 		default:
 			throw new TypeError('Unsupported dataType');
