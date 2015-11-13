@@ -15,9 +15,9 @@
 			get: function () { return scale; },
 			set: function (value) {
 				if (typeof value !== 'number') {
-					throw new TypeError('Invalid scale type.');
+					throw new TypeError('Invalid scale type');
 				} else if (value <= 0 || value > 256) {
-					throw new RangeError('Scale value out of range.');
+					throw new RangeError('Scale value out of range');
 				} else {
 					scale = value;
 				}
@@ -36,9 +36,9 @@
 			get: function () { return margin; },
 			set: function (value) {
 				if (typeof value !== 'number') {
-					throw new TypeError('Invalid margin type.');
+					throw new TypeError('Invalid margin type');
 				} else if (value < 0 || value > 256) {
-					throw new RangeError('Margin value out of range.');
+					throw new RangeError('Margin value out of range');
 				} else {
 					margin = value;
 				}
@@ -59,7 +59,7 @@
 				if (typeof value === 'string') {
 					color1 = value;
 				} else {
-					throw new TypeError('Invalid color1 type.');
+					throw new TypeError('Invalid color1 type');
 				}
 			}
 		});
@@ -78,7 +78,7 @@
 				if (typeof value === 'string') {
 					color0 = value;
 				} else {
-					throw new TypeError('Invalid color2 type.');
+					throw new TypeError('Invalid color2 type');
 				}
 			}
 		});

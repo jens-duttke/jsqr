@@ -7,7 +7,7 @@
 
 	if (typeof encodeMode !== 'undefined') {
 		if (!isEnumValue(this.ENCODE_MODE, encodeMode)) {
-			throw new TypeError('Unsupported encodeMode.');
+			throw new TypeError('Unsupported encodeMode');
 		}
 	} else {
 		encodeMode = this.ENCODE_MODE.UTF8;
@@ -21,7 +21,7 @@
 				if (isEnumValue(this.ENCODE_MODE, value)) {
 					encodeMode = value;
 				} else {
-					throw new TypeError('Unsupported encodeMode.');
+					throw new TypeError('Unsupported encodeMode');
 				}
 			}
 		});
@@ -31,9 +31,9 @@
 
 	if (typeof version !== 'undefined') {
 		if (typeof version !== 'number') {
-			throw new TypeError('Invalid version type.');
+			throw new TypeError('Invalid version type');
 		} else if (version < -40 || version > 40) {
-			throw new RangeError('Invalid version value.');
+			throw new RangeError('Invalid version value');
 		}
 	} else {
 		version = this.DEFAULT;
@@ -45,9 +45,9 @@
 			get: function () { return version; },
 			set: function (value) {
 				if (typeof value !== 'number') {
-					throw new TypeError('Invalid version type.');
+					throw new TypeError('Invalid version type');
 				} else if (value < -40 || value > 40) {
-					throw new RangeError('Invalid version value.');
+					throw new RangeError('Invalid version value');
 				} else {
 					version = value;
 				}
@@ -59,7 +59,7 @@
 
 	if (typeof errorCorrection !== 'undefined') {
 		if (!isEnumValue(this.ERROR_CORRECTION, errorCorrection)) {
-			throw new TypeError('Invalid errorCorrection.');
+			throw new TypeError('Invalid errorCorrection');
 		}
 	} else {
 		errorCorrection = this.ERROR_CORRECTION.M;
@@ -73,7 +73,7 @@
 				if (isEnumValue(this.ERROR_CORRECTION, value)) {
 					errorCorrection = value;
 				} else {
-					throw new TypeError('Invalid errorCorrection.');
+					throw new TypeError('Invalid errorCorrection');
 				}
 			}
 		});

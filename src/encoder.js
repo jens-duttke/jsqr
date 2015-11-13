@@ -121,7 +121,7 @@ function encodeMatrix (data, code, returnVersion) {
 						num = 0;
 					}
 				} else {
-					throw new TypeError('Invalid data format.');
+					throw new TypeError('Invalid data format');
 				}
 			}
 			switch (i % 3) {
@@ -162,18 +162,18 @@ function encodeMatrix (data, code, returnVersion) {
 									if (minVersion >= 27 && minVersion <= 40) {
 										cciLength = 14;
 									} else {
-										throw new RangeError('Bug in version detection.');
+										throw new RangeError('Bug in version detection');
 									}
 								} else {
-									throw new RangeError('Too much data.');
+									throw new RangeError('Too much data');
 								}
 							}
 						} else {
-							throw new RangeError('Too much data.');
+							throw new RangeError('Too much data');
 						}
 					}
 				} else {
-					throw new RangeError('Too much data.');
+					throw new RangeError('Too much data');
 				}
 
 				version = minVersion;
@@ -192,7 +192,7 @@ function encodeMatrix (data, code, returnVersion) {
 				charCode1 = indexInArray((data[i] & 0x60) === 0x60 ? data[i] & 0x5f : data[i], charMap);
 				charCode2 = indexInArray((data[i + 1] & 0x60) === 0x60 ? data[i + 1] & 0x5f : data[i + 1], charMap);
 				if (charCode1 === -1 || charCode2 === -1) {
-					throw new Error('Character not supported in ALPHA_NUMERIC encoding mode.');
+					throw new Error('Character not supported in ALPHA_NUMERIC encoding mode');
 				}
 				bitStreamLen = arrayCopy(bitStream, bitStreamLen, toBits((charCode1 * 45) + charCode2, 11));
 			}
@@ -200,7 +200,7 @@ function encodeMatrix (data, code, returnVersion) {
 			if (i === (data.length - 1)) {
 				charCode1 = indexInArray((data[i] & 0x60) === 0x60 ? data[i] & 0x5f : data[i], charMap);
 				if (charCode1 === -1) {
-					throw new Error('Character not supported in ALPHA_NUMERIC encoding mode.');
+					throw new Error('Character not supported in ALPHA_NUMERIC encoding mode');
 				}
 				bitStreamLen = arrayCopy(bitStream, bitStreamLen, toBits(charCode1, 6));
 			}
@@ -232,18 +232,18 @@ function encodeMatrix (data, code, returnVersion) {
 									if (minVersion >= 27 && minVersion <= 40) {
 										cciLength = 13;
 									} else {
-										throw new RangeError('Bug in version detection.');
+										throw new RangeError('Bug in version detection');
 									}
 								} else {
-									throw new RangeError('Too much data.');
+									throw new RangeError('Too much data');
 								}
 							}
 						} else {
-							throw new RangeError('Too much data.');
+							throw new RangeError('Too much data');
 						}
 					}
 				} else {
-					throw new RangeError('Too much data.');
+					throw new RangeError('Too much data');
 				}
 
 				version = minVersion;
@@ -276,14 +276,14 @@ function encodeMatrix (data, code, returnVersion) {
 							if (minVersion >= 10 && minVersion <= 40) {
 								cciLength = 16;
 							} else {
-								throw new RangeError('Bug in version detection.');
+								throw new RangeError('Bug in version detection');
 							}
 						} else {
-							throw new RangeError('Too much data.');
+							throw new RangeError('Too much data');
 						}
 					}
 				} else {
-					throw new RangeError('Too much data.');
+					throw new RangeError('Too much data');
 				}
 
 				version = minVersion;
@@ -292,7 +292,7 @@ function encodeMatrix (data, code, returnVersion) {
 
 		case code.ENCODE_MODE.KANJI:
 			// UNSUPPORTED
-			throw new Error('Encoding mode "KANJI" not supported yet.');
+			throw new Error('Encoding mode "KANJI" not supported yet');
 			/*
 				if (version >= 0 && version <= 9) {
 					cciLength = 8;
@@ -305,7 +305,7 @@ function encodeMatrix (data, code, returnVersion) {
 			break;
 
 		default:
-			throw new Error('Unsupported encoding mode.');
+			throw new Error('Unsupported encoding mode');
 			break;
 	}
 
@@ -321,7 +321,7 @@ function encodeMatrix (data, code, returnVersion) {
 	var maxDataBits = versionInfo[version][VI.TOTAL_BYTES] - versionInfo[version][VI.ECC_BYTES][ecLevel] << 3;
 
 	if (bitStreamLen > maxDataBits) {
-		throw new RangeError('Too much data for the selected version.');
+		throw new RangeError('Too much data for the selected version');
 	}
 
 	// ---- Append Terminator & Padding ---------------------------------------
@@ -543,7 +543,7 @@ function encodeMatrix (data, code, returnVersion) {
 				if (x === 0) {	// reached end of pattern
 					if (i < bitStreamLen - 1) {
 						// This should be impossible
-						throw new RangeError('Too much data while writing the symbol.');
+						throw new RangeError('Too much data while writing the symbol');
 					}
 					break;
 				}
@@ -754,7 +754,7 @@ function processInput (input, code) {
 			}
 			break;
 		default:
-			throw new TypeError('Unsupported input parameter.');
+			throw new TypeError('Unsupported input parameter');
 	}
 
 	dataArr = (code.encodeMode === code.ENCODE_MODE.UTF8_SIGNATURE ? [0xef, 0xbb , 0xbf] : []);
