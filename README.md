@@ -1,7 +1,7 @@
 [JSQR](http://jsqr.de/) - JavaScript QR Code Encoder Library
 ===============================================================================
 
-JSQR is the JavaScript Library that is able to encode different data formats, like vCards, vCalendar Events, geo coordinates etc. into QR codes directly in the browser on the client, without any requests to a remote server. This increases the flexibility, speed and security of web applications.
+JSQR is the JavaScript library that is able to encode any text and many different data formats, like URLs, vCards, vCalendar Events, geo coordinates, etc. into QR codes directly in the browser on the client, without any requests to a remote server. This increases the flexibility, speed and security of web applications.
 
 Try it yourself using the [QR Code Generator](http://www.jsqr.de/encode.html) or the [Bookmarklet](http://www.jsqr.de/bookmarklet.html).
 
@@ -39,7 +39,7 @@ document.body.appendChild(canvas);                // Append the canvas element t
 
 Browser Compatibility
 ---------------------
-IE8+, Chrome, Firefox, Safari, Opera, Mobile Safari, Android, Windows Mobile, ETC.
+IE8+, Chrome, Firefox, Safari, Opera, Mobile Safari, Android, Windows Mobile, etc.
 
 License
 -------
