@@ -398,7 +398,7 @@ Input.prototype.toString = function () {
 			} else if (/(\/profile\/|(\?|&)id=)(\d{15})(%26|&|$)/.test(str)) {
 				return 'fb://profile/' + /(\/profile\/|(\?|&)id=)(\d{15})(%26|&|$)/.exec(str)[3];
 			}
-			throw new Error('Invalid FACEBOOK_USER_PROFILE.videoId. The id must be numeric, 15 characters in length');
+			throw new Error('Invalid FACEBOOK_USER_PROFILE.profileId. The id must be numeric, 15 characters in length');
 
 		case this.DATA_TYPE.FOURSQUARE:
 			// https://developer.foursquare.com/docs/
