@@ -16,7 +16,7 @@
   },
   "license": "(MIT OR GPL-2.0)",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "grunt"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
