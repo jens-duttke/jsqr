@@ -328,10 +328,10 @@ Input.prototype.toString = function () {
 				str = dataStr();
 			}
 
-			if (!(/\d+$/).test(str)) {
+			if (!/\d+$/.test(str)) {
 				throw new Error('Invalid ITUNES.appId. The id must be numeric');
 			}
-			return 'http://itunes.apple.com/app/id' + (/\d+$/).exec(str)[0];
+			return 'http://itunes.apple.com/app/id' + /\d+$/.exec(str)[0];
 
 		case this.DATA_TYPE.ITUNES_REVIEW:
 			validateType('data', 'string', 'number', 'object');
@@ -344,10 +344,10 @@ Input.prototype.toString = function () {
 				str = dataStr();
 			}
 
-			if (!(/\d+$/).test(str)) {
+			if (!/\d+$/.test(str)) {
 				throw new Error('Invalid ITUNES.appId. The id must be numeric');
 			}
-			return 'itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=' + (/\d+$/).exec(str)[0];
+			return 'itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=' + /\d+$/.exec(str)[0];
 
 		case this.DATA_TYPE.ANDROID_MARKET:
 			// http://developer.android.com/guide/publishing/publishing.html
@@ -393,27 +393,28 @@ Input.prototype.toString = function () {
 				str = dataStr();
 			}
 
-			if ((/^\d{15}$/).test(str)){
+			if (/^\d{15}$/.test(str)){
 				return 'fb://profile/' + str;
-			} else if ((/(\/profile\/|(\?|&)id=)(\d{15})(%26|&|$)/).test(str)) {
-				return 'fb://profile/' + (/(\/profile\/|(\?|&)id=)(\d{15})(%26|&|$)/).exec(str)[3];
+			} else if (/(\/profile\/|(\?|&)id=)(\d{15})(%26|&|$)/.test(str)) {
+				return 'fb://profile/' + /(\/profile\/|(\?|&)id=)(\d{15})(%26|&|$)/.exec(str)[3];
 			}
 			throw new Error('Invalid FACEBOOK_USER_PROFILE.videoId. The id must be numeric, 15 characters in length');
 
 		case this.DATA_TYPE.FOURSQUARE:
-			validateType('data', 'string', 'number', 'object');
+			// https://developer.foursquare.com/docs/
+			validateType('data', 'string', 'object');
 			if (typeof this.data === 'object') {
-				validateType('data.venueId', 'string', 'number');
+				validateType('data.venueId', 'string');
 				validateRequired('data.venueId');
 				str = dataStr('venueId');
-			} else { // string or number
+			} else { // string
 				validateRequired('data');
 				str = dataStr();
 			}
-			if (!(/\d+$/).test(str)) {
-				throw new Error('Invalid FOURSQUARE.venueId. The id must be numeric');
+			if (!/[a-z\d]+$/i.test(str)) {
+				throw new Error('Invalid FOURSQUARE.venueId. The id must be alphanumeric');
 			}
-			return 'http://foursquare.com/venue/' + (/\d+$/).exec(str)[0];
+			return 'http://foursquare.com/venue/' + /[a-z\d]+$/i.exec(str)[0];
 
 		case this.DATA_TYPE.WIKIPEDIA:
 			validateType('data', 'string', 'number', 'object');
@@ -430,7 +431,7 @@ Input.prototype.toString = function () {
 				' ':'_'
 			};
 
-			tmp = (/\/\/([a-z\-]*)\.?wikipedia.org\/wiki\/(.*)/i).exec(str);
+			tmp = /\/\/([a-z\-]*)\.?wikipedia.org\/wiki\/(.*)/i.exec(str);
 			if (tmp === null || tmp.length !== 3) {
 				return 'http://qrwp.org/' + translateChars(str, replaceObj);
 			} else {
@@ -461,10 +462,10 @@ Input.prototype.toString = function () {
 				str = dataStr();
 			}
 
-			if ((/^[-_A-Za-z0-9]+$/).test(str)){
+			if (/^[-_A-Za-z\d]+$/.test(str)){
 				return 'youtube://' + str;
-			} else if ((/(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z0-9]+)(%26|&|$)/).test(str)) {
-				return 'youtube://' + (/(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z0-9]+)(%26|&|$)/).exec(str)[3];
+			} else if (/(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z\d]+)(%26|&|$)/.test(str)) {
+				return 'youtube://' + /(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z\d]+)(%26|&|$)/.exec(str)[3];
 			}
 			throw new Error('Invalid YOUTUBE.videoId. The id must be alphanumeric');
 
@@ -489,7 +490,7 @@ Input.prototype.toString = function () {
 			validateType('data.bbmPin', 'string');
 			validateRequired('data.bbmPin');
 
-			if (!(/^[A-Za-z0-9]{8}$/).test(dataStr('bbmPin'))) {
+			if (!/^[a-z\d]{8}$/i.test(dataStr('bbmPin'))) {
 				throw new Error('Invalid BLACKBERRY_MESSENGER_USER.bbmPin. The pin must be alphanumeric, eight characters in length');
 			}
 			return 'bbm:' + dataStr('bbmPin') + '00000000' + dataStr('firstName') + ' ' + dataStr('lastName');
