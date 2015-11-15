@@ -131,14 +131,14 @@ Input.prototype.toString = function () {
 			validateType('data', 'object');
 			validateType('data.version', 'string', 'number');
 			validateType('data.type', 'string');
-			validateType('data.firstName', 'string', 'number');
-			validateType('data.middleName', 'string', 'number');
-			validateType('data.lastName', 'string', 'number');
-			validateType('data.organization', 'string', 'number');
+			validateType('data.firstName', 'string');
+			validateType('data.middleName', 'string');
+			validateType('data.lastName', 'string');
+			validateType('data.organization', 'string');
 			validateType('data.title', 'string', 'number');
 			validateType('data.mobilePhone', 'string', 'number');
 			validateType('data.work', 'object');
-			validateType('data.work.street', 'string', 'number');
+			validateType('data.work.street', 'string');
 			validateType('data.work.city', 'string');
 			validateType('data.work.zip', 'string', 'number');
 			validateType('data.work.state', 'string');
@@ -148,10 +148,10 @@ Input.prototype.toString = function () {
 			validateType('data.work.eMail', 'string');
 			validateType('data.work.url', 'string');
 			validateType('data.home', 'object');
-			validateType('data.home.street', 'string', 'number');
-			validateType('data.home.city', 'string', 'number');
+			validateType('data.home.street', 'string');
+			validateType('data.home.city', 'string');
 			validateType('data.home.zip', 'string', 'number');
-			validateType('data.home.state', 'string', 'number');
+			validateType('data.home.state', 'string');
 			validateType('data.home.country', 'string');
 			validateType('data.home.phone', 'string', 'number');
 			validateType('data.home.eMail', 'string');
@@ -215,20 +215,20 @@ Input.prototype.toString = function () {
 			// http://www.nttdocomo.co.jp/english/service/imode/make/content/barcode/function/application/addressbook/index.html
 			// http://www.nttdocomo.co.jp/english/service/imode/make/content/barcode/function/application/common/
 			validateType('data', 'object');
-			validateType('data.firstName', 'string', 'number');
-			validateType('data.lastName', 'string', 'number');
+			validateType('data.firstName', 'string');
+			validateType('data.lastName', 'string');
 			validateType('data.eMail', 'string');
 			validateType('data.phoneNumber', 'string', 'number');
 			validateType('data.videoCall', 'string', 'number');
 			validateType('data.birthday', Date, null);
 			validateType('data.poBox', 'string', 'number');
 			validateType('data.room', 'string', 'number');
-			validateType('data.street', 'string', 'number');
+			validateType('data.street', 'string');
 			validateType('data.city', 'string');
 			validateType('data.state', 'string');
 			validateType('data.zip', 'string', 'number');
 			validateType('data.country', 'string');
-			validateType('data.url', 'string', 'number');
+			validateType('data.url', 'string');
 			validateType('data.memo', 'string', 'number');
 
 			replaceObj = {
@@ -255,7 +255,7 @@ Input.prototype.toString = function () {
 			validateType('data.format', 'string');
 			validateType('data.summary', 'string', 'number');
 			validateType('data.description', 'string', 'number');
-			validateType('data.locationName', 'string', 'number');
+			validateType('data.locationName', 'string');
 			validateType('data.fullDay', 'boolean');
 			validateType('data.startDate', Date);
 			validateType('data.endDate', Date);
@@ -439,12 +439,12 @@ Input.prototype.toString = function () {
 			}
 
 		case this.DATA_TYPE.YOUTUBE_USER:
-			validateType('data', 'string', 'number', 'object');
+			validateType('data', 'string', 'object');
 			if (typeof this.data === 'object') {
-				validateType('data.userName', 'string', 'number');
+				validateType('data.userName', 'string');
 				validateRequired('data.userName');
 				str = dataStr('userName');
-			} else { // string or number
+			} else { // string
 				validateRequired('data');
 				str = dataStr();
 			}
@@ -452,12 +452,12 @@ Input.prototype.toString = function () {
 			return 'http://youtube.com/user/' + str;
 
 		case this.DATA_TYPE.YOUTUBE_VIDEO:
-			validateType('data', 'string', 'number', 'object');
+			validateType('data', 'string', 'object');
 			if (typeof this.data === 'object') {
-				validateType('data.videoId', 'string', 'number');
+				validateType('data.videoId', 'string');
 				validateRequired('data.videoId');
 				str = dataStr('videoId');
-			} else { // string or number
+			} else { // string
 				validateRequired('data');
 				str = dataStr();
 			}
