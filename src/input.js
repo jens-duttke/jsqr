@@ -467,7 +467,7 @@ Input.prototype.toString = function () {
 			} else if (/(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z\d]+)(%26|&|$)/.test(str)) {
 				return 'youtube://' + /(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z\d]+)(%26|&|$)/.exec(str)[3];
 			}
-			throw new Error('Invalid YOUTUBE.videoId. The id must be alphanumeric');
+			throw new Error('Invalid YOUTUBE_VIDEO.videoId. The id must be alphanumeric');
 
 		case this.DATA_TYPE.TWEET_FETCH:
 			throw new Error('DATA_TYPE.TWEET_FETCH is currently unsupported');
