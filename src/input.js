@@ -464,8 +464,8 @@ Input.prototype.toString = function () {
 
 			if (/^[-_A-Za-z\d]+$/.test(str)){
 				return 'youtube://' + str;
-			} else if (/(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z\d]+)(%26|&|$)/.test(str)) {
-				return 'youtube://' + /(youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z\d]+)(%26|&|$)/.exec(str)[3];
+			} else if (/(^youtube:\/\/|youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z\d]+)(%26|&|$)/.test(str)) {
+				return 'youtube://' + /(^youtube:\/\/|youtu.be\/|(\?|&)v=|\/v\/)([-_A-Za-z\d]+)(%26|&|$)/.exec(str)[3];
 			}
 			throw new Error('Invalid YOUTUBE_VIDEO.videoId. The id must be alphanumeric');
 
