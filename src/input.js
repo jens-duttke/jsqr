@@ -512,11 +512,15 @@ Input.prototype.toString = function () {
 			if (typeof this.data === 'object') {
 				validateType('data.hash', 'string');
 				validateRequired('data.hash');
-				return (/^bitcoin:/.test(dataStr('hash')) ? '' : 'bitcoin:') + dataStr('hash');
+				str = dataStr('hash');
 			} else { // string
 				validateRequired('data');
-				return (/^bitcoin:/.test(dataStr()) ? '' : 'bitcoin:') + dataStr();
+				str = dataStr();
 			}
+			if (!/^(bitcoin:)?[a-z\d]+$/i.test(str)) {
+				throw new Error('Invalid BITCOIN.hash. The hash must be alphanumeric');
+			}
+			return (/^bitcoin:/.test(str) ? '' : 'bitcoin:') + str;
 
 		default:
 			throw new TypeError('Unsupported dataType');
