@@ -1,6 +1,6 @@
 {
   "name": "jsqr",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "JavaScript Quick Response Code Encoder Library",
   "readme": "README.md",
   "homepage": "http://www.jsqr.de",
@@ -17,12 +17,12 @@
   "license": "(MIT OR GPL-2.0)",
   "scripts": {
     "build": "grunt",
-	"check-outdated": "npx --yes -- check-outdated --ignore-pre-releases"
+    "check-outdated": "npx --yes -- check-outdated --ignore-pre-releases"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-uglify": "^0.9.1"
+    "grunt": "^1.4.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "^5.0.1"
   },
   "repository": {
     "type": "git",
