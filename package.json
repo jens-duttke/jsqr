@@ -16,7 +16,8 @@
   },
   "license": "(MIT OR GPL-2.0)",
   "scripts": {
-    "build": "grunt"
+    "build": "grunt",
+	"check-outdated": "npx --yes -- check-outdated --ignore-pre-releases"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
