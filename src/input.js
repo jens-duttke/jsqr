@@ -548,7 +548,7 @@ Input.prototype.toString = function () {
 				throw new Error('Invalid SEPA_CREDIT_TRANSFER.version. The version must be 1 or 2');
 			}
 
-			if (dataStr('bic') &&!/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/.test(dataStr('bic'))) {
+			if (dataStr('bic') && !/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/.test(dataStr('bic'))) {
 				throw new Error('Invalid SEPA_CREDIT_TRANSFER.bic');
 			}
 			if (dataStr('name').length > 70) {
