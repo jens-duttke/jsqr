@@ -56,7 +56,8 @@ Input.prototype.DATA_TYPE = {
 	WIKIPEDIA: 21,					// Wikipedia Article URL
 	YOUTUBE_USER: 22,				// Youtube User Videos
 	YOUTUBE_VIDEO: 23,				// Youtube Video URL for iPhone
-	BITCOIN: 24						// Bitcoin
+	BITCOIN: 24,					// Bitcoin
+	SEPA_CREDIT_TRANSFER:25			// SEPA Credit Transfer
 };
 
 Input.prototype.toString = function () {
@@ -493,6 +494,7 @@ Input.prototype.toString = function () {
 			if (!/^[a-z\d]{8}$/i.test(dataStr('bbmPin'))) {
 				throw new Error('Invalid BLACKBERRY_MESSENGER_USER.bbmPin. The pin must be alphanumeric, eight characters in length');
 			}
+
 			return 'bbm:' + dataStr('bbmPin') + '00000000' + dataStr('firstName') + ' ' + dataStr('lastName');
 
 		case this.DATA_TYPE.ANDROID_WIFI:
@@ -521,6 +523,78 @@ Input.prototype.toString = function () {
 				throw new Error('Invalid BITCOIN.hash. The hash must be alphanumeric');
 			}
 			return (/^bitcoin:/.test(str) ? '' : 'bitcoin:') + str;
+
+		case this.DATA_TYPE.SEPA_CREDIT_TRANSFER:
+			validateType('data', 'object');
+			validateType('data.version', 'string', 'number');
+			validateType('data.bic', 'string');
+			validateType('data.name', 'string');
+			validateType('data.iban', 'string');
+			validateType('data.currency', 'string');
+			validateType('data.amount', 'string', 'number');
+			validateType('data.purpose', 'string');
+			validateType('data.remittanceReference', 'string');
+			validateType('data.remittanceText', 'string');
+			validateType('data.information', 'string');
+
+			validateRequired('data.version', 'data.name', 'data.iban');
+
+			tmp = parseInt(dataStr('version'), 10);
+
+			if (tmp === 1) {
+				validateRequired('data.bic');
+			}
+			else if (tmp !== 2) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.version. The version must be 1 or 2');
+			}
+
+			if (dataStr('bic') &&!/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/.test(dataStr('bic'))) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.bic');
+			}
+			if (dataStr('name').length > 70) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.name. A maximum of 70 characters is allowed');
+			}
+			if (!/^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/.test(dataStr('iban'))) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.iban');
+			}
+			if (!/^[A-Z]{3}$/.test(dataStr('currency'))) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.currency. Use a three-character uppercase code like "EUR" or "GBP"');
+			}
+
+			tmp = dataStr('amount');
+			if (tmp && (!/^[0-9]+(\.[0-9]{2})?$/.test(tmp) || (parseFloat(tmp) < 0.01 || parseFloat(tmp) > 999999999.99))) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.amount. "." must be used as decimal separator.');
+			}
+			if (dataStr('purpose') && !/^[A-Z]{4}$/.test(dataStr('purpose'))) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.purpose. Only four-character SEPA Purpose Codes are allowed');
+			}
+			if (dataStr('remittanceReference') && dataStr('remittanceText')) {
+				throw new Error('SEPA_CREDIT_TRANFER.remittanceReference amd SEPA_CREDIT_TRANFER.remittanceText cannot be used at the same time');
+			}
+			if (dataStr('remittanceReference').remittanceReference > 25) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.remittanceReference. A maximum of 25 characters is allowed');
+			}
+			if (dataStr('remittanceText').remittanceText > 140) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.remittanceText. A maximum of 140 characters is allowed');
+			}
+			if (dataStr('information').length > 70) {
+				throw new Error('Invalid SEPA_CREDIT_TRANFER.information. A maximum of 70 characters is allowed');
+			}
+
+			return [
+				'BCD',
+				'00' + parseInt(dataStr('version'), 10).toString().substr(-3),
+				'1',
+				'SCT',
+				dataStr('bic'),
+				dataStr('name'),
+				dataStr('iban'),
+				dataStr('currency') + dataStr('amount'),
+				dataStr('purpose'),
+				dataStr('remittanceReference'),
+				dataStr('remittanceText'),
+				dataStr('information')
+			].join('\n');
 
 		default:
 			throw new TypeError('Unsupported dataType');
