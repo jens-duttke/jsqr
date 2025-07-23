@@ -545,40 +545,40 @@ Input.prototype.toString = function () {
 				validateRequired('data.bic');
 			}
 			else if (tmp !== 2) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.version. The version must be 1 or 2');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.version. The version must be 1 or 2');
 			}
 
 			if (dataStr('bic') &&!/^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/.test(dataStr('bic'))) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.bic');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.bic');
 			}
 			if (dataStr('name').length > 70) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.name. A maximum of 70 characters is allowed');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.name. A maximum of 70 characters is allowed');
 			}
 			if (!/^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/.test(dataStr('iban'))) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.iban');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.iban');
 			}
 			if (!/^[A-Z]{3}$/.test(dataStr('currency'))) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.currency. Use a three-character uppercase code like "EUR" or "GBP"');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.currency. Use a three-character uppercase code like "EUR" or "GBP"');
 			}
 
 			tmp = dataStr('amount');
 			if (tmp && (!/^[0-9]+(\.[0-9]{2})?$/.test(tmp) || (parseFloat(tmp) < 0.01 || parseFloat(tmp) > 999999999.99))) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.amount. "." must be used as decimal separator.');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.amount. "." must be used as decimal separator.');
 			}
 			if (dataStr('purpose') && !/^[A-Z]{4}$/.test(dataStr('purpose'))) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.purpose. Only four-character SEPA Purpose Codes are allowed');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.purpose. Only four-character SEPA Purpose Codes are allowed');
 			}
 			if (dataStr('remittanceReference') && dataStr('remittanceText')) {
-				throw new Error('SEPA_CREDIT_TRANFER.remittanceReference amd SEPA_CREDIT_TRANFER.remittanceText cannot be used at the same time');
+				throw new Error('SEPA_CREDIT_TRANSFER.remittanceReference amd SEPA_CREDIT_TRANSFER.remittanceText cannot be used at the same time');
 			}
 			if (dataStr('remittanceReference').remittanceReference > 25) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.remittanceReference. A maximum of 25 characters is allowed');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.remittanceReference. A maximum of 25 characters is allowed');
 			}
 			if (dataStr('remittanceText').remittanceText > 140) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.remittanceText. A maximum of 140 characters is allowed');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.remittanceText. A maximum of 140 characters is allowed');
 			}
 			if (dataStr('information').length > 70) {
-				throw new Error('Invalid SEPA_CREDIT_TRANFER.information. A maximum of 70 characters is allowed');
+				throw new Error('Invalid SEPA_CREDIT_TRANSFER.information. A maximum of 70 characters is allowed');
 			}
 
 			return [
